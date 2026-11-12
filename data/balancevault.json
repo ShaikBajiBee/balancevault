@@ -1,0 +1,270 @@
+{
+  "users": [
+    {
+      "id": "usr_admin_001",
+      "email": "admin@balancevault.com",
+      "passwordHash": "$2a$10$LvgI1nkUpjOfKnrpMSs/d.vReiDCIQYbmIRDbD.MkYRngv2rgkbHy",
+      "fullName": "System Administrator",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "createdAt": "2026-11-06T09:00:00.000Z",
+      "updatedAt": "2026-11-06T09:00:00.000Z"
+    },
+    {
+      "id": "usr_operator_001",
+      "email": "operator@balancevault.com",
+      "passwordHash": "$2a$10$LvgI1nkUpjOfKnrpMSs/d.WOIajkDCrBAwh6Z9ENDszJnIgtSgkB.",
+      "fullName": "Compliance Operator",
+      "role": "OPERATOR",
+      "status": "ACTIVE",
+      "createdAt": "2026-11-06T09:15:00.000Z",
+      "updatedAt": "2026-11-06T09:15:00.000Z"
+    },
+    {
+      "id": "usr_alice_001",
+      "email": "alice@example.com",
+      "passwordHash": "$2a$10$LvgI1nkUpjOfKnrpMSs/d.jsbOWzAnozQPxVaz3DDptxIX/2QM2mq",
+      "fullName": "Alice Walker",
+      "role": "USER",
+      "status": "ACTIVE",
+      "createdAt": "2026-11-06T10:00:00.000Z",
+      "updatedAt": "2026-11-06T10:00:00.000Z"
+    },
+    {
+      "id": "usr_bob_001",
+      "email": "bob@example.com",
+      "passwordHash": "$2a$10$LvgI1nkUpjOfKnrpMSs/d.d98EhdQI2agvLQ2AzXQT8I8niaznpUS",
+      "fullName": "Bob Martinez",
+      "role": "USER",
+      "status": "ACTIVE",
+      "createdAt": "2026-11-06T10:30:00.000Z",
+      "updatedAt": "2026-11-06T10:30:00.000Z"
+    },
+    {
+      "id": "usr_charlie_001",
+      "email": "charlie@example.com",
+      "passwordHash": "$2a$10$LvgI1nkUpjOfKnrpMSs/d.jsbOWzAnozQPxVaz3DDptxIX/2QM2mq",
+      "fullName": "Charlie Davis",
+      "role": "USER",
+      "status": "PENDING_ONBOARDING",
+      "createdAt": "2026-11-07T11:00:00.000Z",
+      "updatedAt": "2026-11-07T11:00:00.000Z"
+    },
+    {
+      "id": "usr_boot_1794489114664",
+      "email": "bootstrap_test_1794489114583@balancevault.com",
+      "passwordHash": "$2a$10$sqyWl51hiPab5I5U.bUQC.73X3lMwoTYePEe0xAHEzioUjoahWig.",
+      "fullName": "Bootstrapped Admin Tester",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "createdAt": "2026-11-12T13:11:54.664Z",
+      "updatedAt": "2026-11-12T13:11:54.664Z"
+    }
+  ],
+  "accounts": [
+    {
+      "id": "acc_alice_usd",
+      "userId": "usr_alice_001",
+      "accountNumber": "BV-10029384-US",
+      "currency": "USD",
+      "balance": 5350,
+      "availableBalance": 5350,
+      "status": "ACTIVE",
+      "createdAt": "2026-11-06T10:05:00.000Z",
+      "updatedAt": "2026-11-12T13:11:54.667Z"
+    },
+    {
+      "id": "acc_bob_usd",
+      "userId": "usr_bob_001",
+      "accountNumber": "BV-77884912-US",
+      "currency": "USD",
+      "balance": 1900,
+      "availableBalance": 1900,
+      "status": "ACTIVE",
+      "createdAt": "2026-11-06T10:35:00.000Z",
+      "updatedAt": "2026-11-12T13:11:54.667Z"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "tx_genesis_alice",
+      "reference": "REF-GENESIS-ALICE-01",
+      "sourceAccountId": null,
+      "destinationAccountId": "acc_alice_usd",
+      "amount": 5000,
+      "fee": 0,
+      "currency": "USD",
+      "type": "DEPOSIT",
+      "status": "COMPLETED",
+      "idempotencyKey": "IDEMP-GENESIS-01",
+      "description": "Initial Vault Funding (Seed Capital)",
+      "createdAt": "2026-11-06T10:10:00.000Z"
+    },
+    {
+      "id": "tx_genesis_bob",
+      "reference": "REF-GENESIS-BOB-01",
+      "sourceAccountId": null,
+      "destinationAccountId": "acc_bob_usd",
+      "amount": 2250,
+      "fee": 0,
+      "currency": "USD",
+      "type": "DEPOSIT",
+      "status": "COMPLETED",
+      "idempotencyKey": "IDEMP-GENESIS-02",
+      "description": "Initial Vault Funding (Seed Capital)",
+      "createdAt": "2026-11-06T10:40:00.000Z"
+    },
+    {
+      "id": "tx_transfer_01",
+      "reference": "REF-TRF-20261108-001",
+      "sourceAccountId": "acc_bob_usd",
+      "destinationAccountId": "acc_alice_usd",
+      "amount": 400,
+      "fee": 0,
+      "currency": "USD",
+      "type": "TRANSFER",
+      "status": "COMPLETED",
+      "idempotencyKey": "IDEMP-TRF-001",
+      "description": "Invoice settlement: Q3 Security Audit",
+      "createdAt": "2026-11-08T14:20:00.000Z"
+    },
+    {
+      "id": "tx_test_1794489114665",
+      "reference": "REF-TEST-1794489114665",
+      "sourceAccountId": "acc_alice_usd",
+      "destinationAccountId": "acc_bob_usd",
+      "amount": 50,
+      "fee": 0,
+      "currency": "USD",
+      "type": "TRANSFER",
+      "status": "COMPLETED",
+      "description": "Automated test suite transfer",
+      "createdAt": "2026-11-12T13:11:54.665Z"
+    }
+  ],
+  "ledgerEntries": [
+    {
+      "id": "led_0001",
+      "transactionId": "tx_genesis_alice",
+      "accountId": "acc_alice_usd",
+      "entryType": "CREDIT",
+      "amount": 5000,
+      "balanceAfter": 5000,
+      "sequenceNumber": 1,
+      "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "createdAt": "2026-11-06T10:10:00.000Z",
+      "currentHash": "462a4ef0d1ba5b48298a0f6fed6dd18f117dbe8e4a05913c58f358ffc6499ce2"
+    },
+    {
+      "id": "led_0002",
+      "transactionId": "tx_genesis_bob",
+      "accountId": "acc_bob_usd",
+      "entryType": "CREDIT",
+      "amount": 2250,
+      "balanceAfter": 2250,
+      "sequenceNumber": 2,
+      "previousHash": "462a4ef0d1ba5b48298a0f6fed6dd18f117dbe8e4a05913c58f358ffc6499ce2",
+      "createdAt": "2026-11-06T10:40:00.000Z",
+      "currentHash": "20f15291980c09aca5ee241d3dcc86d936d1867672c7bb05306f6c944cc2d873"
+    },
+    {
+      "id": "led_0003",
+      "transactionId": "tx_transfer_01",
+      "accountId": "acc_bob_usd",
+      "entryType": "DEBIT",
+      "amount": 400,
+      "balanceAfter": 1850,
+      "sequenceNumber": 3,
+      "previousHash": "20f15291980c09aca5ee241d3dcc86d936d1867672c7bb05306f6c944cc2d873",
+      "createdAt": "2026-11-08T14:20:00.000Z",
+      "currentHash": "9b8961b473cabec8a3ae7343c1151915cb2f7954ce6aab31c1a0399b713f94a6"
+    },
+    {
+      "id": "led_0004",
+      "transactionId": "tx_transfer_01",
+      "accountId": "acc_alice_usd",
+      "entryType": "CREDIT",
+      "amount": 400,
+      "balanceAfter": 5400,
+      "sequenceNumber": 4,
+      "previousHash": "9b8961b473cabec8a3ae7343c1151915cb2f7954ce6aab31c1a0399b713f94a6",
+      "createdAt": "2026-11-08T14:20:00.000Z",
+      "currentHash": "072caf306352232ba32b06ae33121bd17035a60bb4aff1a4db570ea6ad2d83b1"
+    },
+    {
+      "id": "led_test_deb_1794489114666",
+      "transactionId": "tx_test_1794489114665",
+      "accountId": "acc_alice_usd",
+      "entryType": "DEBIT",
+      "amount": 50,
+      "balanceAfter": 5350,
+      "sequenceNumber": 5,
+      "previousHash": "072caf306352232ba32b06ae33121bd17035a60bb4aff1a4db570ea6ad2d83b1",
+      "createdAt": "2026-11-12T13:11:54.666Z",
+      "currentHash": "e6836481a42ca43f70e8ee54f809af883a839eae191773e49d7e9973dc1d3a58"
+    },
+    {
+      "id": "led_test_crd_1794489114666",
+      "transactionId": "tx_test_1794489114665",
+      "accountId": "acc_bob_usd",
+      "entryType": "CREDIT",
+      "amount": 50,
+      "balanceAfter": 1900,
+      "sequenceNumber": 6,
+      "previousHash": "e6836481a42ca43f70e8ee54f809af883a839eae191773e49d7e9973dc1d3a58",
+      "createdAt": "2026-11-12T13:11:54.666Z",
+      "currentHash": "91d73309359366376313f62ddfdcadf9a806b3f49c14e810caa779d1307c1a03"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "aud_0001",
+      "actorId": "usr_admin_001",
+      "actorRole": "ADMIN",
+      "action": "SYSTEM_GENESIS_INITIALIZATION",
+      "entityType": "SYSTEM",
+      "entityId": "GENESIS",
+      "details": {
+        "message": "BalanceVault cryptographic ledger initialized with Genesis block"
+      },
+      "ipAddress": "127.0.0.1",
+      "userAgent": "BalanceVault-Bootstrap/1.0",
+      "timestamp": "2026-11-06T09:00:00.000Z",
+      "previousHash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "currentHash": "ca7b2e65d2d2793c6eb659d9b118fa4aed78b2513aeff25f99b69f628a5b4f51"
+    },
+    {
+      "id": "aud_0002",
+      "actorId": "usr_operator_001",
+      "actorRole": "OPERATOR",
+      "action": "ACCOUNT_ONBOARDING_APPROVED",
+      "entityType": "ACCOUNT",
+      "entityId": "acc_alice_usd",
+      "details": {
+        "accountNumber": "BV-10029384-US",
+        "owner": "Alice Walker"
+      },
+      "ipAddress": "192.168.1.45",
+      "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+      "timestamp": "2026-11-06T10:05:00.000Z",
+      "previousHash": "ca7b2e65d2d2793c6eb659d9b118fa4aed78b2513aeff25f99b69f628a5b4f51",
+      "currentHash": "39778e4cf9d9f33d6a0b303af812aed8270d9e90e2db8efb527f6e2ac3e973aa"
+    }
+  ],
+  "onboardingRequests": [
+    {
+      "id": "onb_charlie_001",
+      "userId": "usr_charlie_001",
+      "idDocumentType": "PASSPORT",
+      "idDocumentNumber": "P89201934",
+      "occupation": "Senior Systems Architect",
+      "monthlyIncome": 9500,
+      "riskScore": 12,
+      "status": "PENDING",
+      "reviewerId": null,
+      "reviewNotes": null,
+      "createdAt": "2026-11-07T11:05:00.000Z",
+      "updatedAt": "2026-11-07T11:05:00.000Z"
+    }
+  ]
+}
