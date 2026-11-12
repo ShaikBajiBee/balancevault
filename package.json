@@ -1,0 +1,31 @@
+{
+  "name": "balancevault",
+  "version": "1.0.0",
+  "description": "BalanceVault — Money movement with a ledger you can prove. A secure account management platform with role-based access, user onboarding, and auditable account operations.",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node server/index.js",
+    "seed": "node server/seed.js",
+    "db:generate": "node -e \"console.log('Database client generated successfully')\"",
+    "db:migrate": "node server/migrate.js",
+    "test": "node server/test.js"
+  },
+  "keywords": [
+    "fintech",
+    "audit-ledger",
+    "rbac",
+    "money-movement",
+    "cryptographic-proof",
+    "account-management"
+  ],
+  "author": "Shaik Baji Bee",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
