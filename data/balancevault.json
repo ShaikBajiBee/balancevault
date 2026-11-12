@@ -87,32 +87,17 @@
   ],
   "transactions": [
     {
-      "id": "tx_genesis_alice",
-      "reference": "REF-GENESIS-ALICE-01",
-      "sourceAccountId": null,
-      "destinationAccountId": "acc_alice_usd",
-      "amount": 5000,
-      "fee": 0,
-      "currency": "USD",
-      "type": "DEPOSIT",
-      "status": "COMPLETED",
-      "idempotencyKey": "IDEMP-GENESIS-01",
-      "description": "Initial Vault Funding (Seed Capital)",
-      "createdAt": "2026-11-06T10:10:00.000Z"
-    },
-    {
-      "id": "tx_genesis_bob",
-      "reference": "REF-GENESIS-BOB-01",
-      "sourceAccountId": null,
+      "id": "tx_test_1794489114665",
+      "reference": "REF-TEST-1794489114665",
+      "sourceAccountId": "acc_alice_usd",
       "destinationAccountId": "acc_bob_usd",
-      "amount": 2250,
+      "amount": 50,
       "fee": 0,
       "currency": "USD",
-      "type": "DEPOSIT",
+      "type": "TRANSFER",
       "status": "COMPLETED",
-      "idempotencyKey": "IDEMP-GENESIS-02",
-      "description": "Initial Vault Funding (Seed Capital)",
-      "createdAt": "2026-11-06T10:40:00.000Z"
+      "description": "Automated test suite transfer",
+      "createdAt": "2026-11-12T13:11:54.665Z"
     },
     {
       "id": "tx_transfer_01",
@@ -129,17 +114,32 @@
       "createdAt": "2026-11-08T14:20:00.000Z"
     },
     {
-      "id": "tx_test_1794489114665",
-      "reference": "REF-TEST-1794489114665",
-      "sourceAccountId": "acc_alice_usd",
+      "id": "tx_genesis_bob",
+      "reference": "REF-GENESIS-BOB-01",
+      "sourceAccountId": null,
       "destinationAccountId": "acc_bob_usd",
-      "amount": 50,
+      "amount": 2250,
       "fee": 0,
       "currency": "USD",
-      "type": "TRANSFER",
+      "type": "DEPOSIT",
       "status": "COMPLETED",
-      "description": "Automated test suite transfer",
-      "createdAt": "2026-11-12T13:11:54.665Z"
+      "idempotencyKey": "IDEMP-GENESIS-02",
+      "description": "Initial Vault Funding (Seed Capital)",
+      "createdAt": "2026-11-06T10:40:00.000Z"
+    },
+    {
+      "id": "tx_genesis_alice",
+      "reference": "REF-GENESIS-ALICE-01",
+      "sourceAccountId": null,
+      "destinationAccountId": "acc_alice_usd",
+      "amount": 5000,
+      "fee": 0,
+      "currency": "USD",
+      "type": "DEPOSIT",
+      "status": "COMPLETED",
+      "idempotencyKey": "IDEMP-GENESIS-01",
+      "description": "Initial Vault Funding (Seed Capital)",
+      "createdAt": "2026-11-06T10:10:00.000Z"
     }
   ],
   "ledgerEntries": [
@@ -249,6 +249,38 @@
       "timestamp": "2026-11-06T10:05:00.000Z",
       "previousHash": "ca7b2e65d2d2793c6eb659d9b118fa4aed78b2513aeff25f99b69f628a5b4f51",
       "currentHash": "39778e4cf9d9f33d6a0b303af812aed8270d9e90e2db8efb527f6e2ac3e973aa"
+    },
+    {
+      "id": "aud_1794489595010_x5u79",
+      "actorId": "usr_admin_001",
+      "actorRole": "ADMIN",
+      "action": "USER_LOGGED_IN",
+      "entityType": "SESSION",
+      "entityId": "usr_admin_001",
+      "details": {
+        "role": "ADMIN"
+      },
+      "ipAddress": "::1",
+      "timestamp": "2026-11-12T13:19:55.010Z",
+      "previousHash": "39778e4cf9d9f33d6a0b303af812aed8270d9e90e2db8efb527f6e2ac3e973aa",
+      "currentHash": "b8a7ae601a2c3222915b68fc78ca63cdf7e076cb477aa9d24ceb800e2b2a3656"
+    },
+    {
+      "id": "aud_1794489651951_68asy",
+      "actorId": "usr_admin_001",
+      "actorRole": "ADMIN",
+      "action": "LEDGER_INTEGRITY_VERIFICATION",
+      "entityType": "LEDGER",
+      "entityId": "ALL",
+      "details": {
+        "isValid": true,
+        "totalEntries": 6,
+        "latestHash": "91d73309359366376313f62ddfdcadf9a806b3f49c14e810caa779d1307c1a03"
+      },
+      "ipAddress": "::1",
+      "timestamp": "2026-11-12T13:20:51.951Z",
+      "previousHash": "b8a7ae601a2c3222915b68fc78ca63cdf7e076cb477aa9d24ceb800e2b2a3656",
+      "currentHash": "18668d5b36a255eeb974cc75ad04a9214093b916ae2bcb74b3c448b24e1b3f3f"
     }
   ],
   "onboardingRequests": [

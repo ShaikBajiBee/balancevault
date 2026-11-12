@@ -31,7 +31,7 @@ skbajibeebaji@gmail.com
 
 ### 4. GitHub repository link
 ```text
-https://github.com/<YOUR_GITHUB_USERNAME>/balancevault
+https://github.com/ShaikBajiBee/balancevault
 ```
 > **IMPORTANT NOTE FROM SNOVASYS:** The repository **must be Public**, not Private, so the evaluators can inspect and clone your code without credentials.
 
@@ -72,7 +72,7 @@ The following features are fully implemented, tested, and working right now:
 ### 8. How to run it on our machine. The exact commands - we will try them.
 ```text
 1. Clone the repository and navigate into the folder:
-git clone https://github.com/<YOUR_GITHUB_USERNAME>/balancevault.git
+git clone https://github.com/ShaikBajiBee/balancevault.git
 cd balancevault
 
 2. Install dependencies:
