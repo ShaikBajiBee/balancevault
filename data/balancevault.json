@@ -281,6 +281,36 @@
       "timestamp": "2026-11-12T13:20:51.951Z",
       "previousHash": "b8a7ae601a2c3222915b68fc78ca63cdf7e076cb477aa9d24ceb800e2b2a3656",
       "currentHash": "18668d5b36a255eeb974cc75ad04a9214093b916ae2bcb74b3c448b24e1b3f3f"
+    },
+    {
+      "id": "aud_1794494955970_y9odx",
+      "actorId": "usr_admin_001",
+      "actorRole": "ADMIN",
+      "action": "USER_LOGGED_IN",
+      "entityType": "SESSION",
+      "entityId": "usr_admin_001",
+      "details": {
+        "role": "ADMIN"
+      },
+      "ipAddress": "::1",
+      "timestamp": "2026-11-12T14:49:15.972Z",
+      "previousHash": "18668d5b36a255eeb974cc75ad04a9214093b916ae2bcb74b3c448b24e1b3f3f",
+      "currentHash": "dd7814229bc1ec4617a708aad17d70b957024b78fbf68d49ea0616d2e10e8fbe"
+    },
+    {
+      "id": "aud_1794495032740_33n8m",
+      "actorId": "usr_admin_001",
+      "actorRole": "ADMIN",
+      "action": "USER_LOGGED_IN",
+      "entityType": "SESSION",
+      "entityId": "usr_admin_001",
+      "details": {
+        "role": "ADMIN"
+      },
+      "ipAddress": "::1",
+      "timestamp": "2026-11-12T14:50:32.740Z",
+      "previousHash": "dd7814229bc1ec4617a708aad17d70b957024b78fbf68d49ea0616d2e10e8fbe",
+      "currentHash": "4f1c2843c95f6da99ce06857a8c034b59a9785bf9f0ddaeabd55676e869ece16"
     }
   ],
   "onboardingRequests": [
