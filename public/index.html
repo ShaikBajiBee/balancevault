@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BalanceVault — Money Movement with a Ledger You Can Prove</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-gradient-to-r from-emerald-600 via-teal-600 to-indigo-700 px-4 py-2 text-xs font-semibold text-white flex justify-between items-center shadow-inner">
+    <div class="flex items-center space-x-2">
+      <span class="inline-block w-2 h-2 rounded-full bg-emerald-300 animate-pulse"></span>
+      <span>Snovasys Hiring Challenge 2026 — Verified Implementation</span>
+    </div>
+    <div class="flex items-center space-x-4">
+      <span>Candidate: <strong class="underline">SHAIK BAJI BEE</strong> (skbajibeebaji)</span>
+      <span class="hidden md:inline bg-white/20 px-2 py-0.5 rounded text-[10px]">LEDGER ENGINE: SHA-256 AUDITABLE</span>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-emerald-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+          <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <span class="text-xl font-bold tracking-tight text-white flex items-center space-x-1.5">
+            <span>Balance</span><span class="text-emerald-400">Vault</span>
+          </span>
+          <p class="text-[10px] text-slate-400 -mt-1">Provable Financial Ledger Platform</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav id="navTabs" class="hidden md:flex items-center space-x-1 text-sm font-medium">
+        <button onclick="switchTab('dashboard')" id="tab-dashboard" class="nav-tab px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center space-x-1.5">
+          <i data-lucide="wallet" class="w-4 h-4"></i>
+          <span>Dashboard</span>
+        </button>
+        <button onclick="switchTab('transfer')" id="tab-transfer" class="nav-tab px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center space-x-1.5">
+          <i data-lucide="arrow-left-right" class="w-4 h-4"></i>
+          <span>Money Movement</span>
+        </button>
+        <button onclick="switchTab('ledger')" id="tab-ledger" class="nav-tab px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center space-x-1.5">
+          <i data-lucide="layers" class="w-4 h-4"></i>
+          <span>Provable Ledger</span>
+        </button>
+        <button onclick="switchTab('admin')" id="tab-admin" class="nav-tab px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center space-x-1.5">
+          <i data-lucide="lock" class="w-4 h-4"></i>
+          <span>Admin & Compliance</span>
+        </button>
+        <button onclick="switchTab('bootstrap')" id="tab-bootstrap" class="nav-tab px-3 py-2 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800 transition flex items-center space-x-1.5">
+          <i data-lucide="key-round" class="w-4 h-4"></i>
+          <span>Bootstrap & Switcher</span>
+        </button>
+      </nav>
+
+      <!-- User Context / Quick Switcher -->
+      <div class="flex items-center space-x-3">
+        <div id="userBadge" class="hidden items-center space-x-2 bg-slate-800/90 border border-slate-700 px-3 py-1.5 rounded-lg text-xs">
+          <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+          <div>
+            <div id="currentUserName" class="font-semibold text-white leading-tight">Admin</div>
+            <div id="currentUserRole" class="text-[10px] text-emerald-400 font-mono">ADMIN</div>
+          </div>
+        </div>
+        <button onclick="logout()" id="logoutBtn" class="hidden text-xs bg-red-950/60 hover:bg-red-900/80 border border-red-800/60 text-red-300 px-3 py-1.5 rounded-lg transition">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ========================================== -->
+    <!-- TAB 1: USER DASHBOARD & VAULT ACCOUNTS     -->
+    <!-- ========================================== -->
+    <div id="view-dashboard" class="tab-view space-y-6">
+      
+      <!-- Status Notice if Pending Onboarding -->
+      <div id="onboardingBanner" class="hidden bg-amber-950/60 border border-amber-600/40 rounded-xl p-4 flex items-start space-x-3">
+        <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5"></i>
+        <div class="flex-1 text-sm">
+          <h4 class="font-bold text-amber-300">Identity Onboarding Verification Required</h4>
+          <p class="text-amber-200/80 text-xs mt-1">To unlock full vault transfer capabilities, submit your KYC verification documents below.</p>
+          <button onclick="openKycModal()" class="mt-2 text-xs bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-3 py-1.5 rounded-lg transition">
+            Submit KYC Documents
+          </button>
+        </div>
+      </div>
+
+      <!-- Overview Header Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <!-- Card 1: Total Vault Balance -->
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/80 rounded-2xl p-5 shadow-xl relative overflow-hidden">
+          <div class="absolute -right-6 -bottom-6 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
+          <div class="flex justify-between items-center text-slate-400 text-xs font-medium">
+            <span>TOTAL LIQUID VAULT BALANCE</span>
+            <i data-lucide="vault" class="w-4 h-4 text-emerald-400"></i>
+          </div>
+          <div class="mt-3 flex items-baseline space-x-1">
+            <span class="text-3xl sm:text-4xl font-extrabold text-white" id="totalBalanceDisplay">$0.00</span>
+            <span class="text-xs text-slate-400 font-mono">USD</span>
+          </div>
+          <div class="mt-4 flex items-center justify-between text-xs border-t border-slate-700/60 pt-3">
+            <span class="text-slate-400">Available to Move:</span>
+            <span class="font-semibold text-emerald-400" id="availableBalanceDisplay">$0.00</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Primary Account Card -->
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/80 rounded-2xl p-5 shadow-xl">
+          <div class="flex justify-between items-center text-slate-400 text-xs font-medium">
+            <span>ACTIVE VAULT NUMBER</span>
+            <span id="accountStatusPill" class="px-2 py-0.5 rounded-full text-[10px] font-mono bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">ACTIVE</span>
+          </div>
+          <div class="mt-3">
+            <div id="accountNumberDisplay" class="font-mono text-xl font-bold text-slate-100 tracking-wider">BV-00000000-USD</div>
+            <p class="text-xs text-slate-400 mt-1">Multi-signature Protected Account</p>
+          </div>
+          <div class="mt-4 flex space-x-2 border-t border-slate-700/60 pt-3">
+            <button onclick="copyAccountNumber()" class="text-xs text-slate-300 hover:text-white flex items-center space-x-1 bg-slate-700/50 px-2.5 py-1 rounded">
+              <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+              <span>Copy Account</span>
+            </button>
+            <button onclick="openDepositModal()" class="text-xs bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded flex items-center space-x-1">
+              <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i>
+              <span>Deposit</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 3: Provable Ledger Status -->
+        <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700/80 rounded-2xl p-5 shadow-xl">
+          <div class="flex justify-between items-center text-slate-400 text-xs font-medium">
+            <span>CRYPTOGRAPHIC LEDGER</span>
+            <span class="text-[10px] font-mono bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full border border-indigo-500/30">SHA-256</span>
+          </div>
+          <div class="mt-3">
+            <div class="text-xl font-bold text-white flex items-center space-x-2">
+              <i data-lucide="check-circle" class="w-5 h-5 text-emerald-400"></i>
+              <span>Auditable & Provable</span>
+            </div>
+            <p class="text-xs text-slate-400 mt-1" id="ledgerHeightDashboard">Ledger Height: 4 blocks chained</p>
+          </div>
+          <div class="mt-4 border-t border-slate-700/60 pt-3 flex items-center justify-between">
+            <button onclick="switchTab('ledger')" class="text-xs text-indigo-400 hover:text-indigo-300 font-semibold flex items-center space-x-1">
+              <span>Inspect cryptographic chain</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Actions & Transaction History -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- Quick Transfer Widget -->
+        <div class="bg-slate-800/80 border border-slate-700 rounded-2xl p-5 shadow-lg">
+          <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+            <i data-lucide="send" class="w-4 h-4 text-emerald-400"></i>
+            <span>Quick Transfer</span>
+          </h3>
+          <p class="text-xs text-slate-400 mt-1">Instant provable double-entry transfer.</p>
+
+          <form onsubmit="handleQuickTransfer(event)" class="mt-4 space-y-3">
+            <div>
+              <label class="text-[11px] font-medium text-slate-300 block mb-1">Destination Account Number</label>
+              <input type="text" id="quickDestAccount" placeholder="BV-77884912-US" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs font-mono text-white focus:outline-none focus:border-emerald-500">
+              <div class="flex space-x-2 mt-1">
+                <button type="button" onclick="setQuickRecipient('BV-10029384-US')" class="text-[10px] text-slate-400 hover:text-emerald-400 underline font-mono">Alice's Vault</button>
+                <button type="button" onclick="setQuickRecipient('BV-77884912-US')" class="text-[10px] text-slate-400 hover:text-emerald-400 underline font-mono">Bob's Vault</button>
+              </div>
+            </div>
+
+            <div>
+              <label class="text-[11px] font-medium text-slate-300 block mb-1">Amount ($ USD)</label>
+              <input type="number" step="0.01" min="1" id="quickAmount" placeholder="100.00" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs font-mono text-white focus:outline-none focus:border-emerald-500">
+            </div>
+
+            <div>
+              <label class="text-[11px] font-medium text-slate-300 block mb-1">Transfer Note</label>
+              <input type="text" id="quickNote" placeholder="e.g. Services payment" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+            </div>
+
+            <button type="submit" id="quickTransferBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-2 rounded-lg text-xs transition flex items-center justify-center space-x-1 shadow-md shadow-emerald-600/20">
+              <i data-lucide="check" class="w-4 h-4"></i>
+              <span>Post to Provable Ledger</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Recent Ledger Activity Stream -->
+        <div class="lg:col-span-2 bg-slate-800/80 border border-slate-700 rounded-2xl p-5 shadow-lg">
+          <div class="flex justify-between items-center mb-4">
+            <div>
+              <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+                <i data-lucide="history" class="w-4 h-4 text-indigo-400"></i>
+                <span>Your Account Transaction History</span>
+              </h3>
+              <p class="text-xs text-slate-400">Every entry is immutable and backed by cryptographic signature.</p>
+            </div>
+            <button onclick="loadUserDashboard()" class="text-xs text-slate-400 hover:text-white flex items-center space-x-1">
+              <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+              <span>Refresh</span>
+            </button>
+          </div>
+
+          <div class="overflow-x-auto custom-scrollbar">
+            <table class="w-full text-left text-xs">
+              <thead class="text-[10px] text-slate-400 uppercase bg-slate-900/60 border-b border-slate-700">
+                <tr>
+                  <th class="px-3 py-2.5">Reference / Type</th>
+                  <th class="px-3 py-2.5">Date</th>
+                  <th class="px-3 py-2.5">Amount</th>
+                  <th class="px-3 py-2.5">Ledger Hash</th>
+                  <th class="px-3 py-2.5">Status</th>
+                </tr>
+              </thead>
+              <tbody id="dashboardTxTable" class="divide-y divide-slate-700/60">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: MONEY MOVEMENT / FULL TRANSFER      -->
+    <!-- ========================================== -->
+    <div id="view-transfer" class="tab-view hidden space-y-6 max-w-3xl mx-auto">
+      <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 shadow-2xl">
+        <div class="flex items-center space-x-3 border-b border-slate-700 pb-4">
+          <div class="w-12 h-12 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center border border-emerald-500/30">
+            <i data-lucide="arrow-left-right" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <h2 class="text-lg font-bold text-white">Provable Money Movement Transfer</h2>
+            <p class="text-xs text-slate-400">Double-entry accounting with SHA-256 cryptographic proof.</p>
+          </div>
+        </div>
+
+        <form onsubmit="handleFullTransfer(event)" class="mt-6 space-y-5">
+          <div>
+            <label class="text-xs font-semibold text-slate-300 block mb-1.5">Source Account Vault</label>
+            <select id="transferSourceAccount" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500 font-mono">
+              <!-- Populated dynamically -->
+            </select>
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-slate-300 block mb-1.5">Destination Account Number</label>
+            <input type="text" id="transferDestAccount" placeholder="BV-77884912-US" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white focus:outline-none focus:border-emerald-500">
+            <p class="text-[11px] text-slate-400 mt-1">Enter target recipient's unique Vault ID</p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="text-xs font-semibold text-slate-300 block mb-1.5">Transfer Amount ($ USD)</label>
+              <input type="number" step="0.01" min="0.01" id="transferAmount" placeholder="250.00" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white focus:outline-none focus:border-emerald-500">
+            </div>
+            <div>
+              <label class="text-xs font-semibold text-slate-300 block mb-1.5">Idempotency Key (Optional)</label>
+              <input type="text" id="transferIdempotencyKey" placeholder="auto-generated-if-empty" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs font-mono text-white focus:outline-none focus:border-emerald-500">
+            </div>
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-slate-300 block mb-1.5">Payment Memo / Reason</label>
+            <textarea id="transferDescription" rows="2" placeholder="e.g. Contract milestone release" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-emerald-500"></textarea>
+          </div>
+
+          <!-- Cryptographic Assurance Box -->
+          <div class="bg-indigo-950/40 border border-indigo-500/30 rounded-xl p-4 text-xs text-indigo-200">
+            <div class="flex items-center space-x-2 font-bold text-indigo-300">
+              <i data-lucide="cpu" class="w-4 h-4"></i>
+              <span>Provable Execution Guarantee:</span>
+            </div>
+            <p class="mt-1 text-[11px] text-slate-300 leading-relaxed">
+              When submitted, the backend verifies source balance invariant, writes a Debit entry to the sender, a Credit entry to the recipient, calculates the SHA-256 hash chaining against the previous ledger entry, and commits both atomically.
+            </p>
+          </div>
+
+          <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl text-sm transition flex items-center justify-center space-x-2 shadow-lg shadow-emerald-600/30">
+            <i data-lucide="shield" class="w-4 h-4"></i>
+            <span>Confirm & Commit to Provable Ledger</span>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: PROVABLE LEDGER & AUDIT EXPLORER    -->
+    <!-- ========================================== -->
+    <div id="view-ledger" class="tab-view hidden space-y-6">
+      
+      <!-- Ledger Integrity Verification Banner -->
+      <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/40 rounded-2xl p-6 shadow-2xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">CRYPTOGRAPHIC PROOF ENGINE</span>
+              <span class="text-xs text-slate-400 font-mono">SHA-256 HASH CHAIN</span>
+            </div>
+            <h2 class="text-xl font-extrabold text-white mt-1">Mathematical Proof of Non-Tampering</h2>
+            <p class="text-xs text-slate-300 mt-0.5 max-w-2xl">
+              Each entry cryptographically signs the sequence number, timestamp, account ID, transaction type, amount, and previous entry hash. Any tampering breaks the mathematical continuity.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="runLedgerVerification()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs transition flex items-center space-x-2 shadow-lg shadow-emerald-600/30">
+              <i data-lucide="check-check" class="w-4 h-4"></i>
+              <span>Verify Cryptographic Integrity</span>
+            </button>
+            <button onclick="simulateTamper()" class="bg-rose-950/80 hover:bg-rose-900 border border-rose-700/60 text-rose-300 font-bold px-3 py-2.5 rounded-xl text-xs transition flex items-center space-x-1.5">
+              <i data-lucide="flame" class="w-4 h-4"></i>
+              <span>Simulate Tamper Test</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Live Integrity Report Card -->
+        <div id="verificationResultBox" class="mt-5 bg-slate-950/80 border border-emerald-500/40 rounded-xl p-4 text-xs font-mono space-y-2">
+          <div class="flex items-center space-x-2 text-emerald-400 font-bold">
+            <i data-lucide="shield-check" class="w-4 h-4"></i>
+            <span id="verificationStatusText">STATUS: LEDGER INTEGRITY 100% VERIFIED</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] text-slate-400 pt-2 border-t border-slate-800">
+            <div>Total Blocks: <span id="vTotalBlocks" class="text-white font-bold">4</span></div>
+            <div class="truncate">Latest Hash: <span id="vLatestHash" class="text-emerald-400">...</span></div>
+            <div class="truncate">Genesis: <span class="text-slate-500">0000000000000000...</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ledger Entries Table -->
+      <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-5 shadow-xl">
+        <h3 class="text-sm font-bold text-white flex items-center space-x-2 mb-3">
+          <i data-lucide="list-ordered" class="w-4 h-4 text-emerald-400"></i>
+          <span>Immutable Ledger Block Sequence</span>
+        </h3>
+
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left text-xs font-mono">
+            <thead class="text-[10px] text-slate-400 uppercase bg-slate-900 border-b border-slate-700">
+              <tr>
+                <th class="px-3 py-2.5">Seq #</th>
+                <th class="px-3 py-2.5">Type</th>
+                <th class="px-3 py-2.5">Account ID</th>
+                <th class="px-3 py-2.5">Amount</th>
+                <th class="px-3 py-2.5">Balance After</th>
+                <th class="px-3 py-2.5">Previous Block Hash</th>
+                <th class="px-3 py-2.5">Current Block Hash</th>
+              </tr>
+            </thead>
+            <tbody id="ledgerTableBody" class="divide-y divide-slate-700/60">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 4: ADMIN COMMAND & COMPLIANCE CENTER   -->
+    <!-- ========================================== -->
+    <div id="view-admin" class="tab-view hidden space-y-6">
+      
+      <!-- Metrics Overview -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4">
+          <div class="text-[11px] text-slate-400">Total System Users</div>
+          <div id="admTotalUsers" class="text-2xl font-bold text-white mt-1">0</div>
+        </div>
+        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4">
+          <div class="text-[11px] text-slate-400">Total Vault Accounts</div>
+          <div id="admTotalAccounts" class="text-2xl font-bold text-white mt-1">0</div>
+        </div>
+        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4">
+          <div class="text-[11px] text-slate-400">Cumulative Volume</div>
+          <div id="admTotalVolume" class="text-2xl font-bold text-emerald-400 mt-1">$0.00</div>
+        </div>
+        <div class="bg-slate-800/80 border border-slate-700 rounded-xl p-4">
+          <div class="text-[11px] text-slate-400">Pending KYC Queue</div>
+          <div id="admPendingKyc" class="text-2xl font-bold text-amber-400 mt-1">0</div>
+        </div>
+      </div>
+
+      <!-- Pending Onboarding Applications -->
+      <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-5 shadow-xl">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+            <i data-lucide="user-check" class="w-4 h-4 text-amber-400"></i>
+            <span>Identity Onboarding & KYC Queue</span>
+          </h3>
+          <span class="text-xs text-slate-400">Compliance Operator Action Required</span>
+        </div>
+
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left text-xs">
+            <thead class="text-[10px] text-slate-400 uppercase bg-slate-900 border-b border-slate-700">
+              <tr>
+                <th class="px-3 py-2">Applicant</th>
+                <th class="px-3 py-2">Document</th>
+                <th class="px-3 py-2">Occupation</th>
+                <th class="px-3 py-2">Income</th>
+                <th class="px-3 py-2">Risk Score</th>
+                <th class="px-3 py-2">Status</th>
+                <th class="px-3 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminOnboardingTable" class="divide-y divide-slate-700/60">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Users & Account Management -->
+      <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-5 shadow-xl">
+        <h3 class="text-sm font-bold text-white flex items-center space-x-2 mb-3">
+          <i data-lucide="users" class="w-4 h-4 text-indigo-400"></i>
+          <span>Registered Platform Accounts & Roles</span>
+        </h3>
+
+        <div class="overflow-x-auto custom-scrollbar">
+          <table class="w-full text-left text-xs">
+            <thead class="text-[10px] text-slate-400 uppercase bg-slate-900 border-b border-slate-700">
+              <tr>
+                <th class="px-3 py-2">User Details</th>
+                <th class="px-3 py-2">Role</th>
+                <th class="px-3 py-2">Status</th>
+                <th class="px-3 py-2">Created</th>
+                <th class="px-3 py-2">Controls</th>
+              </tr>
+            </thead>
+            <tbody id="adminUsersTable" class="divide-y divide-slate-700/60">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- System Audit Logs Stream -->
+      <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-5 shadow-xl">
+        <h3 class="text-sm font-bold text-white flex items-center space-x-2 mb-3">
+          <i data-lucide="file-text" class="w-4 h-4 text-emerald-400"></i>
+          <span>Cryptographically Chained Audit Trail</span>
+        </h3>
+
+        <div class="overflow-x-auto custom-scrollbar max-h-72">
+          <table class="w-full text-left text-xs font-mono">
+            <thead class="text-[10px] text-slate-400 uppercase bg-slate-900 border-b border-slate-700 sticky top-0">
+              <tr>
+                <th class="px-3 py-2">Timestamp</th>
+                <th class="px-3 py-2">Actor Role</th>
+                <th class="px-3 py-2">Action</th>
+                <th class="px-3 py-2">Entity</th>
+                <th class="px-3 py-2">Audit Hash</th>
+              </tr>
+            </thead>
+            <tbody id="adminAuditTable" class="divide-y divide-slate-700/60">
+              <!-- Populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 5: BOOTSTRAP & DEMO QUICK SWITCHER     -->
+    <!-- ========================================== -->
+    <div id="view-bootstrap" class="tab-view hidden space-y-6 max-w-4xl mx-auto">
+      
+      <!-- Quick Demo Switcher -->
+      <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 shadow-xl">
+        <div class="flex items-center space-x-3 border-b border-slate-700 pb-4">
+          <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center">
+            <i data-lucide="user-cog" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="text-base font-bold text-white">Instant Demo Account Switcher</h2>
+            <p class="text-xs text-slate-400">Click any persona below to authenticate instantly with full JWT session tokens.</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-4">
+          <button onclick="demoLogin('admin@balancevault.com', 'Admin@123456')" class="text-left bg-slate-900/90 hover:bg-slate-800 border border-indigo-500/40 p-3.5 rounded-xl transition">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-white">System Admin</span>
+              <span class="text-[9px] bg-red-500/20 text-red-300 px-1.5 py-0.5 rounded font-mono">ADMIN</span>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-1">Full control, audit log, user freeze</div>
+          </button>
+
+          <button onclick="demoLogin('operator@balancevault.com', 'Operator@123456')" class="text-left bg-slate-900/90 hover:bg-slate-800 border border-emerald-500/40 p-3.5 rounded-xl transition">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-white">Compliance Op</span>
+              <span class="text-[9px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-mono">OPERATOR</span>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-1">KYC review, account freeze/hold</div>
+          </button>
+
+          <button onclick="demoLogin('alice@example.com', 'Alice@123456')" class="text-left bg-slate-900/90 hover:bg-slate-800 border border-slate-700 p-3.5 rounded-xl transition">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-white">Alice Walker</span>
+              <span class="text-[9px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded font-mono">USER</span>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-1">Active account ($5,400 balance)</div>
+          </button>
+
+          <button onclick="demoLogin('charlie@example.com', 'Alice@123456')" class="text-left bg-slate-900/90 hover:bg-slate-800 border border-amber-500/40 p-3.5 rounded-xl transition">
+            <div class="flex justify-between items-center">
+              <span class="text-xs font-bold text-white">Charlie Davis</span>
+              <span class="text-[9px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded font-mono">PENDING</span>
+            </div>
+            <div class="text-[11px] text-slate-400 mt-1">Pending KYC verification flow</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- First Administrator Bootstrap Endpoint Test -->
+      <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-6 shadow-xl">
+        <div class="flex items-center space-x-3 border-b border-slate-700 pb-4">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+            <i data-lucide="terminal" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h2 class="text-base font-bold text-white">First Administrator Bootstrap Interface</h2>
+            <p class="text-xs text-slate-400">Verifies the <code class="text-emerald-400 font-mono">POST /api/auth/bootstrap-admin</code> endpoint.</p>
+          </div>
+        </div>
+
+        <form onsubmit="handleBootstrapAdmin(event)" class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="sm:col-span-2">
+            <label class="text-xs font-semibold text-slate-300 block mb-1">Bootstrap Operator Secret Token</label>
+            <input type="text" id="bootToken" value="BV_BOOTSTRAP_SECURE_TOKEN_2026" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs font-mono text-emerald-400 focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-slate-300 block mb-1">New Administrator Full Name</label>
+            <input type="text" id="bootName" value="Primary Audit Administrator" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <div>
+            <label class="text-xs font-semibold text-slate-300 block mb-1">Administrator Email</label>
+            <input type="email" id="bootEmail" placeholder="newadmin@balancevault.com" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <div class="sm:col-span-2">
+            <label class="text-xs font-semibold text-slate-300 block mb-1">Administrator Password</label>
+            <input type="password" id="bootPassword" value="Admin@123456" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-500">
+          </div>
+
+          <div class="sm:col-span-2">
+            <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-4 py-2.5 rounded-lg text-xs transition flex items-center space-x-1.5 shadow-md shadow-indigo-600/30">
+              <i data-lucide="key" class="w-4 h-4"></i>
+              <span>Execute Bootstrap Admin Creation</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- Modals -->
+  <!-- Deposit Funds Modal -->
+  <div id="depositModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+          <i data-lucide="plus-circle" class="w-4 h-4 text-emerald-400"></i>
+          <span>Deposit Funds into Vault</span>
+        </h3>
+        <button onclick="closeDepositModal()" class="text-slate-400 hover:text-white">&times;</button>
+      </div>
+
+      <form onsubmit="handleDeposit(event)" class="space-y-4">
+        <div>
+          <label class="text-xs text-slate-300 block mb-1">Deposit Amount ($ USD)</label>
+          <input type="number" step="0.01" min="1" id="depositAmount" placeholder="500.00" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs font-mono text-white">
+        </div>
+        <div>
+          <label class="text-xs text-slate-300 block mb-1">Source / Funding Memo</label>
+          <input type="text" id="depositDescription" placeholder="External Wire Funding" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+        </div>
+        <div class="flex justify-end space-x-2 pt-2">
+          <button type="button" onclick="closeDepositModal()" class="px-3 py-1.5 text-xs text-slate-400 hover:text-white">Cancel</button>
+          <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-1.5 rounded-lg text-xs">Confirm Deposit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- KYC Modal -->
+  <div id="kycModal" class="hidden fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-sm font-bold text-white flex items-center space-x-2">
+          <i data-lucide="file-check" class="w-4 h-4 text-emerald-400"></i>
+          <span>Submit Identity Onboarding (KYC)</span>
+        </h3>
+        <button onclick="closeKycModal()" class="text-slate-400 hover:text-white">&times;</button>
+      </div>
+
+      <form onsubmit="handleKycSubmit(event)" class="space-y-3">
+        <div>
+          <label class="text-xs text-slate-300 block mb-1">Government ID Type</label>
+          <select id="kycDocType" class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+            <option value="PASSPORT">Passport</option>
+            <option value="NATIONAL_ID">National ID / Aadhaar</option>
+            <option value="DRIVERS_LICENSE">Driver's License</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs text-slate-300 block mb-1">Document Identifier Number</label>
+          <input type="text" id="kycDocNum" placeholder="Z89102934" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs font-mono text-white">
+        </div>
+        <div>
+          <label class="text-xs text-slate-300 block mb-1">Current Occupation</label>
+          <input type="text" id="kycOccupation" placeholder="Software Engineer" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs text-white">
+        </div>
+        <div>
+          <label class="text-xs text-slate-300 block mb-1">Monthly Estimated Income ($ USD)</label>
+          <input type="number" id="kycIncome" placeholder="6000" required class="w-full bg-slate-800 border border-slate-700 rounded-lg px-3 py-2 text-xs font-mono text-white">
+        </div>
+        <div class="flex justify-end space-x-2 pt-2">
+          <button type="button" onclick="closeKycModal()" class="px-3 py-1.5 text-xs text-slate-400 hover:text-white">Cancel</button>
+          <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-4 py-1.5 rounded-lg text-xs">Submit Application</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="fixed bottom-5 right-5 hidden bg-slate-800 border border-slate-700 px-4 py-3 rounded-xl shadow-2xl text-xs z-50 flex items-center space-x-2 transition-all">
+    <i id="toastIcon" data-lucide="info" class="w-4 h-4 text-emerald-400"></i>
+    <span id="toastMsg" class="text-white font-medium">Notification message</span>
+  </div>
+
+  <!-- Footer -->
+  <footer class="border-t border-slate-800 bg-slate-950 py-4 text-center text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row justify-between items-center space-y-2 sm:space-y-0">
+      <span>BalanceVault Financial Technologies &bull; Snovasys Hiring Challenge 2026</span>
+      <div class="flex space-x-4 text-[11px]">
+        <a href="/health" target="_blank" class="hover:text-emerald-400">/health</a>
+        <a href="/ready" target="_blank" class="hover:text-emerald-400">/ready</a>
+        <a href="/api/ledger/verify-integrity" target="_blank" class="hover:text-emerald-400">/api/ledger/verify-integrity</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/app.js"></script>
+</body>
+</html>
